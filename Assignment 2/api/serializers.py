@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Items, PurchaseItems, Purchases, SellItems, Sells
+from .models.items_model import Items, PurchaseItems, Purchases, SellItems, Sells
 
 class ItemsSerializer(serializers.ModelSerializer):
     class Meta:

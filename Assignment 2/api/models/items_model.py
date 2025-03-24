@@ -1,10 +1,6 @@
 from django.db import models
 from django.db.models import Max
 
-class Manager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(is_deleted=False)
-
 # Items model
 class Items(models.Model):
     code = models.CharField(max_length=10, unique=True, db_index=True)
@@ -16,9 +12,6 @@ class Items(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
-
-    objects = Manager()
-    all_objects = models.Manager()
 
     def __str__(self):
         return self.name
@@ -53,7 +46,10 @@ class Purchases(models.Model):
     code = models.CharField(max_length=10)
     date = models.DateField()
     description = models.CharField(max_length=255)
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    
     def __str__(self):
         return self.code
     
@@ -67,7 +63,11 @@ class PurchaseItems(models.Model):
     quantity = models.IntegerField()
     unit_price = models.DecimalField(max_digits=10, decimal_places=2)
     header_code = models.ForeignKey(Purchases, on_delete=models.CASCADE) 
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    
+    
     def __str__(self):
         return self.item_code.name
     
@@ -81,7 +81,11 @@ class Sells(models.Model):
     code = models.CharField(max_length=10)
     date = models.DateField()
     description = models.CharField(max_length=255)
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    
+    
     def __str__(self):
         return self.code
     
@@ -94,7 +98,11 @@ class SellItems(models.Model):
     item_code = models.ForeignKey(Items, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     header_code = models.ForeignKey(Sells, on_delete=models.CASCADE)
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)
+    
+    
     def __str__(self):
         return self.item_code.name
     
