@@ -41,58 +41,58 @@ def evaluate(
 if __name__ == "__main__":
   # Test the General LFSR
   print("General LFSR Test")
-  general_lfsr = LFSR([0, 1, 1, 0])
-  general_output = evaluate(generalExpectedOutput, general_lfsr)
+  generalLfsr = LFSR([0, 1, 1, 0])
+  generalOutput = evaluate(generalExpectedOutput, generalLfsr)
   
   # Test the Custom LFSR
   print("\nCustom LFSR Test")
-  custom_lfsr = LFSR([0, 1, 1, 0])
+  customLfsr = LFSR([0, 1, 1, 0])
 
   # Set the initial state
   print("> Setting initial state to 0b110010")
-  custom_lfsr.setInitialState(0b110010)
-  if custom_lfsr.getInitialState() == 0b110010:
+  customLfsr.setInitialState(0b110010)
+  if customLfsr.getInitialState() == 0b110010:
     print("  Initial state set to 0b110010")
   else:
     print("  Initial state not set to 0b110010")
 
   # Set the tap sequence
   print("> Setting tap sequence to [0, 1, 4]")
-  custom_lfsr.setTapSequence([0, 1, 4])
-  if custom_lfsr.getTapSequence() == [0, 1, 4]:
+  customLfsr.setTapSequence([0, 1, 4])
+  if customLfsr.getTapSequence() == [0, 1, 4]:
     print("  Tap sequence set to [0, 1, 4]")
   else:
     print("  Tap sequence not set to [0, 1, 4]")
 
   # Generate the next 5 bits of the LFSR
   print("> Generating the next 5 bits of the LFSR\n")
-  custom_lfsr.generate(5)
+  customLfsr.generate(5)
 
   # Set the register size
   print("\n> Setting register size to 4")
-  custom_lfsr.setRegSize(4)
-  if custom_lfsr.getRegSize() == 4:
+  customLfsr.setRegSize(4)
+  if customLfsr.getRegSize() == 4:
     print("  Register size set to 4")
   else:
     print("  Register size not set to 4")
 
   # Get the current state
   print("> Getting the current state")
-  print("  Current state:", custom_lfsr.bin(custom_lfsr.getCurrentState()))
+  print("  Current state:", customLfsr.bin(customLfsr.getCurrentState()))
 
   # Reset the LFSR
   print("> Resetting the LFSR")
-  custom_lfsr.reset()
-  print("  LFSR reset, current state:", custom_lfsr.bin(custom_lfsr.getCurrentState()))
+  customLfsr.reset()
+  print("  LFSR reset, current state:", customLfsr.bin(customLfsr.getCurrentState()))
 
   # Set all configuration to math the general LFSR
   print("> Setting all configuration to match the general LFSR")
-  custom_lfsr.setInitialState([0, 1, 1, 0])
-  custom_lfsr.setTapSequence([0, 3])
-  custom_lfsr.setRegSize(4)
+  customLfsr.setInitialState([0, 1, 1, 0])
+  customLfsr.setTapSequence([0, 3])
+  customLfsr.setRegSize(4)
   print("  Configuration set\n")
-  print(custom_lfsr)
+  print(customLfsr)
 
   # Compare the output of the general LFSR and the custom LFSR
   print("\n> Comparing the output of the general LFSR and the custom LFSR")
-  custom_output = evaluate(generalExpectedOutput, custom_lfsr)
+  customOutput = evaluate(generalExpectedOutput, customLfsr)
