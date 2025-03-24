@@ -7,8 +7,8 @@ class Items(models.Model):
     name = models.CharField(max_length=100)
     unit = models.CharField(max_length=50)
     description = models.CharField(max_length=255)
-    stock = models.IntegerField()
-    balance = models.IntegerField()
+    stock = models.IntegerField(default=0)
+    balance = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
@@ -40,41 +40,6 @@ class Items(models.Model):
         verbose_name = "Item"
         verbose_name_plural = "Items"
         ordering = ['name']
-
-# Purchase model
-class Purchases(models.Model):
-    code = models.CharField(max_length=10)
-    date = models.DateField()
-    description = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    is_deleted = models.BooleanField(default=False)
-    
-    def __str__(self):
-        return self.code
-    
-    class Meta:
-        verbose_name = "Purchase"
-        verbose_name_plural = "Purchases"
-        ordering = ['date']
-
-class PurchaseItems(models.Model):
-    item_code = models.ForeignKey(Items, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
-    header_code = models.ForeignKey(Purchases, on_delete=models.CASCADE) 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    is_deleted = models.BooleanField(default=False)
-    
-    
-    def __str__(self):
-        return self.item_code.name
-    
-    class Meta:
-        verbose_name = "Purchase Item"
-        verbose_name_plural = "Purchase Items"
-        ordering = ['item_code']
 
 # Sells model
 class Sells(models.Model):
