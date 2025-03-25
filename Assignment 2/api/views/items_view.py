@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 
 from ..models.items_model import Items
-from ..serializers import ItemsSerializer
+from ..serializers.items_serializer import ItemsSerializer
 
 class ItemsList(generics.ListCreateAPIView):
     queryset = Items.objects.filter(is_deleted=False)

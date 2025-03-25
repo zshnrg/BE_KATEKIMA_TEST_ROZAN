@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 
 from ..models.purchases_model import Purchases
-from ..serializers import PurchasesSerializer, PurchaseDetailsListSerializer, PurchaseDetailsSerializer
+from ..serializers.purchases_serializer import PurchasesSerializer, PurchaseDetailsListSerializer, PurchaseDetailsSerializer
 
 class PurchasesList(generics.ListCreateAPIView):
     queryset = Purchases.objects.filter(is_deleted=False)
