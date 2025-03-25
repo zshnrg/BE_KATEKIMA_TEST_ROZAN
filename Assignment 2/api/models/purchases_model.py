@@ -44,6 +44,11 @@ class PurchaseDetails(models.Model):
     quantity = models.IntegerField()
     unit_price = models.IntegerField()
     header_code = models.ForeignKey(Purchases, to_field='code', on_delete=models.CASCADE)
+
+    # Additional column for better record keeping
+    balance_quantity = models.IntegerField(default=0)
+    balance = models.IntegerField(default=0)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
@@ -64,7 +69,10 @@ class PurchaseDetails(models.Model):
             item = Items.objects.get(code=self.item_code.code)
             item.stock += self.quantity
             item.balance += self.quantity * self.unit_price
-            
+
+            self.balance_quantity = item.stock
+            self.balance = item.balance
+
             item.save()
         super().save(*args, **kwargs)
 

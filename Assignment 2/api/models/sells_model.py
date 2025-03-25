@@ -44,6 +44,12 @@ class SellDetails(models.Model):
     item_code = models.ForeignKey(Items, to_field='code', on_delete=models.CASCADE)
     quantity = models.IntegerField()
     header_code = models.ForeignKey(Sells, to_field='code', on_delete=models.CASCADE)
+
+    # Additional column for better record keeping
+    unit_price = models.IntegerField(default=0)
+    balance_quantity = models.IntegerField(default=0)
+    balance = models.IntegerField(default=0)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
@@ -92,6 +98,10 @@ class SellDetails(models.Model):
 
             item.stock -= self.quantity
             item.balance -= sell_balance
+
+            self.unit_price = sell_balance // self.quantity
+            self.balance_quantity = item.stock
+            self.balance = item.balance
 
             item.save()
         super().save(*args, **kwargs)
