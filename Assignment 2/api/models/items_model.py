@@ -40,38 +40,3 @@ class Items(models.Model):
         verbose_name = "Item"
         verbose_name_plural = "Items"
         ordering = ['name']
-
-# Sells model
-class Sells(models.Model):
-    code = models.CharField(max_length=10)
-    date = models.DateField()
-    description = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    is_deleted = models.BooleanField(default=False)
-    
-    
-    def __str__(self):
-        return self.code
-    
-    class Meta:
-        verbose_name = "Sell"
-        verbose_name_plural = "Sells"
-        ordering = ['date']
-
-class SellItems(models.Model):
-    item_code = models.ForeignKey(Items, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-    header_code = models.ForeignKey(Sells, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    is_deleted = models.BooleanField(default=False)
-    
-    
-    def __str__(self):
-        return self.item_code.name
-    
-    class Meta:
-        verbose_name = "Sell Item"
-        verbose_name_plural = "Sell Items"
-        ordering = ['item_code']
