@@ -2,6 +2,7 @@ from django.urls import path
 from .views import items_view as items
 from .views import purchases_view as purchases
 from .views import sells_view as sells
+from .views import report_view as report
 
 urlpatterns = [
   path('items/', items.ItemsList.as_view(), name='items_list'),
@@ -13,5 +14,7 @@ urlpatterns = [
 
   path('sells/', sells.SellsList.as_view(), name='sells_list'),
   path('sells/<str:code>/', sells.Sell.as_view(), name='sell'),
-  path('sells/<str:header_code>/details/', sells.SellDetails.as_view(), name='sell_details')
+  path('sells/<str:header_code>/details/', sells.SellDetails.as_view(), name='sell_details'),
+
+  path('report/<str:item_code>/', report.Report.as_view(), name='report'),
 ]
