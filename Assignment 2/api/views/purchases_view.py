@@ -60,8 +60,9 @@ class PurchaseDetails(generics.CreateAPIView):
         return Response(serializer.data)
       
     def post(self, request, *args, **kwargs):
-        purchase = Purchases.objects.filter(code=kwargs['header_code'], is_deleted=False).first()
-        if not purchase:
+        try:
+            purchase = Purchases.objects.get(code=kwargs['header_code'], is_deleted=False)
+        except Purchases.DoesNotExist:
             return Response({"message": "Item not found"}, status=404)
         
         serializer = PurchaseDetailsSerializer(data=request.data)
