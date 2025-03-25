@@ -12,16 +12,16 @@ class Sell(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SellsSerializer
     lookup_field = 'code'
 
-    def get(self, request, *args, **kwargs):
-        sell = Sells.objects.filter(code=kwargs['code'], is_deleted=False).first()
+    def get(self, request, code):
+        sell = Sells.objects.filter(code=code, is_deleted=False).first()
         if not sell:
             return Response({"message": "Item not found"}, status=404)
         
         serializer = SellsSerializer(sell)
         return Response(serializer.data)
     
-    def put(self, request, *args, **kwargs):
-        sell = Sells.objects.filter(code=kwargs['code'], is_deleted=False).first()
+    def put(self, request, code):
+        sell = Sells.objects.filter(code=code, is_deleted=False).first()
         if not sell:
             return Response({"message": "Item not found"}, status=404)
         
@@ -32,11 +32,11 @@ class Sell(generics.RetrieveUpdateDestroyAPIView):
         
         return Response(serializer.errors, status=400)
     
-    def patch(self, request, *args, **kwargs):
+    def patch(self, request, code):
         return Response({"message": "PATCH method not allowed"}, status=405)
     
-    def delete(self, request, *args, **kwargs):
-        sell = Sells.objects.filter(code=kwargs['code'], is_deleted=False).first()
+    def delete(self, request, code):
+        sell = Sells.objects.filter(code=code, is_deleted=False).first()
         if not sell:
             return Response({"message": "Item not found"}, status=404)
         
@@ -47,9 +47,9 @@ class SellDetails(generics.CreateAPIView):
     serializer_class = SellDetailsSerializer
     queryset = Sells.objects.filter(is_deleted=False)
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, haeader_code):
         try:
-            sell = Sells.objects.prefetch_related('selldetails_set').get(code=kwargs['header_code'], is_deleted=False)
+            sell = Sells.objects.prefetch_related('selldetails_set').get(code=haeader_code, is_deleted=False)
         except Sells.DoesNotExist:
             return Response({"message": "Sell not found"}, status=404)
 
@@ -57,9 +57,9 @@ class SellDetails(generics.CreateAPIView):
         serializer = SellDetailsListSerializer(sell)
         return Response(serializer.data)
     
-    def post(self, request, *args, **kwargs):
+    def post(self, request, haeader_code):
         try:
-            sell = Sells.objects.get(code=kwargs['header_code'], is_deleted=False)
+            sell = Sells.objects.get(code=haeader_code, is_deleted=False)
         except Sells.DoesNotExist:
             return Response({"message": "Sell not found"}, status=404)
         try:

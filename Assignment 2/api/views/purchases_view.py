@@ -13,16 +13,16 @@ class Purchase(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PurchasesSerializer
     lookup_field = 'code'
 
-    def get(self, request, *args, **kwargs):
-        purchase = Purchases.objects.filter(code=kwargs['code'], is_deleted=False).first()
+    def get(self, request, code):
+        purchase = Purchases.objects.filter(code=code, is_deleted=False).first()
         if not purchase:
             return Response({"message": "Item not found"}, status=404)
         
         serializer = PurchasesSerializer(purchase)
         return Response(serializer.data)
     
-    def put(self, request, *args, **kwargs):
-        purchase = Purchases.objects.filter(code=kwargs['code'], is_deleted=False).first()
+    def put(self, request, code):
+        purchase = Purchases.objects.filter(code=code, is_deleted=False).first()
         if not purchase:
             return Response({"message": "Item not found"}, status=404)
         
@@ -33,11 +33,11 @@ class Purchase(generics.RetrieveUpdateDestroyAPIView):
         
         return Response(serializer.errors, status=400)
     
-    def patch(self, request, *args, **kwargs):
+    def patch(self, request, code):
         return Response({"message": "PATCH method not allowed"}, status=405)
     
-    def delete(self, request, *args, **kwargs):
-        purchase = Purchases.objects.filter(code=kwargs['code'], is_deleted=False).first()
+    def delete(self, request, code):
+        purchase = Purchases.objects.filter(code=code, is_deleted=False).first()
         if not purchase:
             return Response({"message": "Item not found"}, status=404)
         
@@ -49,9 +49,9 @@ class PurchaseDetails(generics.CreateAPIView):
     serializer_class = PurchaseDetailsSerializer
     queryset = Purchases.objects.filter(is_deleted=False)
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, header_code):
         try:
-            purchase = Purchases.objects.prefetch_related('purchasedetails_set').get(code=kwargs['header_code'], is_deleted=False)
+            purchase = Purchases.objects.prefetch_related('purchasedetails_set').get(code=header_code, is_deleted=False)
         except Purchases.DoesNotExist:
             return Response({"message": "Purchase not found"}, status=404)
 
@@ -59,9 +59,9 @@ class PurchaseDetails(generics.CreateAPIView):
         serializer = PurchaseDetailsListSerializer(purchase)
         return Response(serializer.data)
       
-    def post(self, request, *args, **kwargs):
+    def post(self, request, header_code):
         try:
-            purchase = Purchases.objects.get(code=kwargs['header_code'], is_deleted=False)
+            purchase = Purchases.objects.get(code=header_code, is_deleted=False)
         except Purchases.DoesNotExist:
             return Response({"message": "Item not found"}, status=404)
         
