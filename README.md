@@ -1,4 +1,4 @@
-# KATIKIMA BE
+# KATEKIMA Backend Technical Assesment
 
 ## Setting Up the Environment
 
@@ -31,4 +31,12 @@ To run the main program, navigate to the `Assignment 1` folder and execute the s
 python main.py
 ```
 
-Make sure the virtual environment is activated before running the program.
+### Assignment 2 Folder
+The `Assignment 2` folder contains a backend implementation using Django Rest Framework for a warehouse stock-keeping system.
+
+To get started, navigate to the `Assignment 2` folder and follow the instructions provided in the `README.md` file inside that folder.
+
+
+---
+
+❕❕❕ Make sure the virtual environment is activated before running the program.
