@@ -3,17 +3,20 @@ from rest_framework.response import Response
 
 from django.utils.dateparse import parse_date
 from django.shortcuts import get_object_or_404
+from django.http import FileResponse
 
 from ..models.items_model import Items
-from ..models.purchases_model import Purchases, PurchaseDetails
-from ..models.sells_model import Sells, SellDetails
+from ..models.purchases_model import PurchaseDetails
+from ..models.sells_model import SellDetails
+
+from ..utils.report_pdf import generate
 
 class Report(views.APIView):
 
     def get(self, request, item_code):
         start_date = request.GET.get("start_date")
         end_date = request.GET.get("end_date")
-        file = request.GET.get("file") or "json"
+        pdf = request.GET.get("pdf") == "true"
 
         # Get the item
         item = get_object_or_404(Items, code=item_code)
@@ -64,7 +67,7 @@ class Report(views.APIView):
                 transaction_type = "out"
 
             report["items"].append({
-                "date": transaction.header_code.date,
+                "date": transaction.header_code.date.strftime('%d-%m-%Y'),
                 "description": transaction.header_code.description,
                 "code": transaction.header_code.code,
                 "in_qty": 0,
@@ -139,7 +142,16 @@ class Report(views.APIView):
 
 
         # Return the report
-        return Response(report)
+        if not pdf:
+            return Response(report)
+        else:
+            # Generate PDF
+            buffer = generate(report)
+
+            # Return the PDF
+            response = FileResponse(buffer, as_attachment=True, filename=f"{item.code}-Report.pdf")
+            return response
+            
     
     def post(self, request, item_code):
         return Response({"message": "POST method is not allowed"}, status=405)
